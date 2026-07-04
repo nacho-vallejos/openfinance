@@ -1,0 +1,524 @@
+[
+  {
+    "id": "bna",
+    "codigo_bcra": "011",
+    "nombre": "Banco Nacion",
+    "tasa_base_tna": 72.5,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 750",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 6000000,
+          "monotributo": 9000000,
+          "pyme": 35000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 650 y 749",
+        "multiplicador_riesgo": 1.18,
+        "monto_maximo_estimado": {
+          "personas": 3500000,
+          "monotributo": 5500000,
+          "pyme": 22000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 550 y 649",
+        "multiplicador_riesgo": 1.45,
+        "monto_maximo_estimado": {
+          "personas": 1800000,
+          "monotributo": 2800000,
+          "pyme": 9500000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 450 y 549",
+        "multiplicador_riesgo": 1.9,
+        "monto_maximo_estimado": {
+          "personas": 700000,
+          "monotributo": 1200000,
+          "pyme": 3500000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 450",
+        "multiplicador_riesgo": 2.5,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "bapro",
+    "codigo_bcra": "014",
+    "nombre": "Banco Provincia",
+    "tasa_base_tna": 74,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 750",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 5500000,
+          "monotributo": 8500000,
+          "pyme": 32000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 650 y 749",
+        "multiplicador_riesgo": 1.2,
+        "monto_maximo_estimado": {
+          "personas": 3200000,
+          "monotributo": 5200000,
+          "pyme": 20000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 550 y 649",
+        "multiplicador_riesgo": 1.5,
+        "monto_maximo_estimado": {
+          "personas": 1600000,
+          "monotributo": 2600000,
+          "pyme": 8500000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 450 y 549",
+        "multiplicador_riesgo": 1.95,
+        "monto_maximo_estimado": {
+          "personas": 600000,
+          "monotributo": 1000000,
+          "pyme": 3000000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 450",
+        "multiplicador_riesgo": 2.6,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "galicia",
+    "codigo_bcra": "007",
+    "nombre": "Galicia",
+    "tasa_base_tna": 82,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 760",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 7500000,
+          "monotributo": 11000000,
+          "pyme": 42000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 660 y 759",
+        "multiplicador_riesgo": 1.22,
+        "monto_maximo_estimado": {
+          "personas": 4200000,
+          "monotributo": 6800000,
+          "pyme": 26000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 560 y 659",
+        "multiplicador_riesgo": 1.55,
+        "monto_maximo_estimado": {
+          "personas": 2000000,
+          "monotributo": 3200000,
+          "pyme": 11000000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 460 y 559",
+        "multiplicador_riesgo": 2.05,
+        "monto_maximo_estimado": {
+          "personas": 800000,
+          "monotributo": 1400000,
+          "pyme": 4200000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 460",
+        "multiplicador_riesgo": 2.75,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "santander",
+    "codigo_bcra": "072",
+    "nombre": "Santander Argentina",
+    "tasa_base_tna": 83.5,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 760",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 7200000,
+          "monotributo": 10500000,
+          "pyme": 40000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 660 y 759",
+        "multiplicador_riesgo": 1.24,
+        "monto_maximo_estimado": {
+          "personas": 4000000,
+          "monotributo": 6500000,
+          "pyme": 24000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 560 y 659",
+        "multiplicador_riesgo": 1.58,
+        "monto_maximo_estimado": {
+          "personas": 1900000,
+          "monotributo": 3100000,
+          "pyme": 10500000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 460 y 559",
+        "multiplicador_riesgo": 2.08,
+        "monto_maximo_estimado": {
+          "personas": 750000,
+          "monotributo": 1300000,
+          "pyme": 4000000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 460",
+        "multiplicador_riesgo": 2.8,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "bbva",
+    "codigo_bcra": "017",
+    "nombre": "BBVA Argentina",
+    "tasa_base_tna": 84,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 760",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 7000000,
+          "monotributo": 10200000,
+          "pyme": 39000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 660 y 759",
+        "multiplicador_riesgo": 1.25,
+        "monto_maximo_estimado": {
+          "personas": 3900000,
+          "monotributo": 6300000,
+          "pyme": 23000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 560 y 659",
+        "multiplicador_riesgo": 1.6,
+        "monto_maximo_estimado": {
+          "personas": 1800000,
+          "monotributo": 3000000,
+          "pyme": 10000000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 460 y 559",
+        "multiplicador_riesgo": 2.1,
+        "monto_maximo_estimado": {
+          "personas": 700000,
+          "monotributo": 1250000,
+          "pyme": 3800000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 460",
+        "multiplicador_riesgo": 2.85,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "macro",
+    "codigo_bcra": "285",
+    "nombre": "Banco Macro",
+    "tasa_base_tna": 86,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 740",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 6500000,
+          "monotributo": 9500000,
+          "pyme": 36000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 640 y 739",
+        "multiplicador_riesgo": 1.25,
+        "monto_maximo_estimado": {
+          "personas": 3600000,
+          "monotributo": 5900000,
+          "pyme": 21000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 540 y 639",
+        "multiplicador_riesgo": 1.62,
+        "monto_maximo_estimado": {
+          "personas": 1700000,
+          "monotributo": 2800000,
+          "pyme": 9500000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 440 y 539",
+        "multiplicador_riesgo": 2.12,
+        "monto_maximo_estimado": {
+          "personas": 650000,
+          "monotributo": 1100000,
+          "pyme": 3400000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 440",
+        "multiplicador_riesgo": 2.9,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "icbc",
+    "codigo_bcra": "015",
+    "nombre": "ICBC Argentina",
+    "tasa_base_tna": 85,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 750",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 6800000,
+          "monotributo": 9800000,
+          "pyme": 37000000
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 650 y 749",
+        "multiplicador_riesgo": 1.24,
+        "monto_maximo_estimado": {
+          "personas": 3700000,
+          "monotributo": 6000000,
+          "pyme": 22000000
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 550 y 649",
+        "multiplicador_riesgo": 1.6,
+        "monto_maximo_estimado": {
+          "personas": 1750000,
+          "monotributo": 2900000,
+          "pyme": 9800000
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 450 y 549",
+        "multiplicador_riesgo": 2.1,
+        "monto_maximo_estimado": {
+          "personas": 680000,
+          "monotributo": 1200000,
+          "pyme": 3600000
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 450",
+        "multiplicador_riesgo": 2.85,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "brubank",
+    "codigo_bcra": "143",
+    "nombre": "Brubank",
+    "tasa_base_tna": 88,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 760",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 5000000,
+          "monotributo": 6500000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 660 y 759",
+        "multiplicador_riesgo": 1.3,
+        "monto_maximo_estimado": {
+          "personas": 2800000,
+          "monotributo": 3800000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 560 y 659",
+        "multiplicador_riesgo": 1.75,
+        "monto_maximo_estimado": {
+          "personas": 1200000,
+          "monotributo": 1800000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 460 y 559",
+        "multiplicador_riesgo": 2.25,
+        "monto_maximo_estimado": {
+          "personas": 400000,
+          "monotributo": 700000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 460",
+        "multiplicador_riesgo": 3,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "uala",
+    "codigo_bcra": "384",
+    "nombre": "Uala",
+    "tasa_base_tna": 89.5,
+    "politicas_riesgo": [
+      {
+        "categoria": "situacion_1",
+        "descripcion": "Cumplimiento normal BCRA o score mayor a 760",
+        "multiplicador_riesgo": 1,
+        "monto_maximo_estimado": {
+          "personas": 4500000,
+          "monotributo": 6000000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_2",
+        "descripcion": "Riesgo bajo-medio o score entre 660 y 759",
+        "multiplicador_riesgo": 1.32,
+        "monto_maximo_estimado": {
+          "personas": 2500000,
+          "monotributo": 3400000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_3",
+        "descripcion": "Riesgo medio o score entre 560 y 659",
+        "multiplicador_riesgo": 1.78,
+        "monto_maximo_estimado": {
+          "personas": 1100000,
+          "monotributo": 1600000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_4",
+        "descripcion": "Riesgo alto o score entre 460 y 559",
+        "multiplicador_riesgo": 2.3,
+        "monto_maximo_estimado": {
+          "personas": 350000,
+          "monotributo": 600000,
+          "pyme": 0
+        }
+      },
+      {
+        "categoria": "situacion_5",
+        "descripcion": "Irrecuperable o score menor a 460",
+        "multiplicador_riesgo": 3.1,
+        "monto_maximo_estimado": {
+          "personas": 0,
+          "monotributo": 0,
+          "pyme": 0
+        }
+      }
+    ]
+  }
+]

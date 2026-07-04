@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%; /* slate-50: #f8fafc */
+    --foreground: 222.2 84% 4.9%; /* slate-900 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 161.4 93.5% 30.2%; /* emerald-600: #059669 */
+    --primary-foreground: 162 100% 97%; /* light emerald tint */
+
+    --secondary: 210 40% 96.1%; /* slate-100: #f1f5f9 */
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%; /* slate-500 */
+
+    --accent: 150 60% 98%; /* soft green tint for highlights */
+    --accent-foreground: 161.4 93.5% 20%; /* dark emerald */
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%; /* slate-200: #e2e8f0 */
+    --input: 214.3 31.8% 91.4%;
+    --ring: 161.4 93.5% 30.2%; /* emerald-600 */
+
+    --radius: 0.75rem; /* modern rounded corners */
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 161.4 93.5% 30.2%;
+    --primary-foreground: 162 100% 97%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 161.4 93.5% 30.2%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom premium scrollbar for professional dashboard look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.4);
+}
+
+/* Glassmorphism effects */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* MVP-wide dark mode bridge for existing Tailwind utility-heavy screens */
+.dark .bg-white {
+  background-color: rgb(15 23 42);
+}
+
+.dark .bg-slate-50 {
+  background-color: rgb(2 6 23);
+}
+
+.dark .bg-slate-100 {
+  background-color: rgb(30 41 59);
+}
+
+.dark .bg-slate-900 {
+  background-color: rgb(15 23 42);
+}
+
+.dark .bg-emerald-50,
+.dark .bg-emerald-50\/40,
+.dark .bg-emerald-50\/50,
+.dark .bg-emerald-50\/60 {
+  background-color: rgb(6 78 59 / 0.28);
+}
+
+.dark .bg-sky-50,
+.dark .bg-sky-50\/70 {
+  background-color: rgb(12 74 110 / 0.28);
+}
+
+.dark .bg-amber-50 {
+  background-color: rgb(120 53 15 / 0.28);
+}
+
+.dark .bg-white\/80 {
+  background-color: rgb(2 6 23 / 0.82);
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200 {
+  border-color: rgb(30 41 59);
+}
+
+.dark .border-emerald-100,
+.dark .border-emerald-200 {
+  border-color: rgb(6 95 70);
+}
+
+.dark .border-sky-100 {
+  border-color: rgb(7 89 133);
+}
+
+.dark .border-amber-200 {
+  border-color: rgb(180 83 9);
+}
+
+.dark .text-slate-950,
+.dark .text-slate-900,
+.dark .text-slate-800 {
+  color: rgb(248 250 252);
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-slate-500 {
+  color: rgb(203 213 225);
+}
+
+.dark .text-slate-400 {
+  color: rgb(148 163 184);
+}
+
+.dark .text-emerald-800,
+.dark .text-emerald-700 {
+  color: rgb(110 231 183);
+}
+
+.dark .text-sky-700 {
+  color: rgb(125 211 252);
+}
+
+.dark .text-amber-900 {
+  color: rgb(253 230 138);
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  color-scheme: dark;
+}
+
+.dark input::placeholder {
+  color: rgb(100 116 139);
+}
+
+.dark .shadow-sm,
+.dark .shadow-md,
+.dark .shadow-xl,
+.dark .shadow-2xl {
+  box-shadow: none;
+}
