@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model bancos {
+  id             String             @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  codigo_bcra    String             @unique @db.VarChar(5)
+  nombre         String             @db.VarChar(150)
+  tasa_base_tna  Decimal            @db.Decimal(5, 2)
+  activo         Boolean            @default(true)
+  created_at     DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime           @default(now()) @db.Timestamptz(6)
+  politicas_riesgo politicas_riesgo[]
+}
+
+model politicas_riesgo {
+  id                     String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  banco_id               String   @db.Uuid
+  situacion_bcra_min     Int
+  situacion_bcra_max     Int
+  score_veraz_min        Int
+  score_veraz_max        Int
+  multiplicador_riesgo   Decimal  @default(1.00) @db.Decimal(3, 2)
+  monto_maximo_permitido Decimal  @db.Decimal(15, 2)
+  created_at             DateTime @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime @default(now()) @db.Timestamptz(6)
+  bancos                 bancos   @relation(fields: [banco_id], references: [id], onDelete: Cascade)
+
+  @@index([banco_id], map: "idx_politicas_riesgo_banco_id")
+  @@index([banco_id, situacion_bcra_min, situacion_bcra_max, score_veraz_min, score_veraz_max], map: "idx_politicas_riesgo_rangos")
+}
+
+model historial_crediticio_usuarios {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  usuario_id                    String   @db.Uuid
+  situacion_bcra_actual         Int
+  score_veraz_actual            Int
+  ingresos_mensuales_declarados Decimal  @db.Decimal(15, 2)
+  tiene_concursos_quiebras      Boolean  @default(false)
+  created_at                    DateTime @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime @default(now()) @db.Timestamptz(6)
+
+  @@index([usuario_id], map: "idx_historial_crediticio_usuario_id")
+  @@index([situacion_bcra_actual, score_veraz_actual], map: "idx_historial_crediticio_score_situacion")
+}

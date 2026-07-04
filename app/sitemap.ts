@@ -8,6 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/conexiones",
     "/certificado",
     "/ofertas-credito",
+    "/emisor-creditos",
+    "/simulador-elegibilidad",
     "/asistente-fiscal",
     "/catalogo-bancos",
   ].map((route) => ({

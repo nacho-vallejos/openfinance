@@ -4,6 +4,27 @@
     "codigo_bcra": "011",
     "nombre": "Banco Nacion",
     "tasa_base_tna": 72.5,
+    "sitioWeb": "https://www.bna.com.ar",
+    "tea": 103.4,
+    "cft": 128.2,
+    "perfilesAdmitidos": {
+      "estudiante": {
+        "productos": ["Cuenta Gratuita Universal", "Tarjeta de credito con limite reducido"],
+        "requisitos": ["DNI", "Constancia de alumno regular", "Caja de ahorro activa"]
+      },
+      "salarioMinimo": {
+        "productos": ["Tarjeta basica", "Prestamo personal inicial"],
+        "requisitos": ["DNI", "Origen general de fondos", "Sin mora activa"]
+      },
+      "monotributista": {
+        "productos": ["Prestamo productivo monotributo", "Paquete cuenta negocio"],
+        "requisitos": ["Constancia ARCA", "Categoria vigente", "Movimientos bancarios"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo personal sueldo", "Tarjeta credito classic"],
+        "requisitos": ["DNI", "Recibo de sueldo", "Cuenta sueldo"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -62,6 +83,23 @@
     "codigo_bcra": "014",
     "nombre": "Banco Provincia",
     "tasa_base_tna": 74,
+    "sitioWeb": "https://www.bancoprovincia.com.ar",
+    "tea": 106.1,
+    "cft": 130.5,
+    "perfilesAdmitidos": {
+      "estudiante": {
+        "productos": ["Cuenta DNI joven", "Tarjeta con limite inicial"],
+        "requisitos": ["DNI", "Residencia local", "Constancia educativa"]
+      },
+      "salarioMinimo": {
+        "productos": ["Tarjeta basica", "Prestamo consumo tramo inicial"],
+        "requisitos": ["DNI", "Ingresos registrables", "Cuenta bancaria"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo personal sueldo", "Tarjeta Visa/Mastercard"],
+        "requisitos": ["DNI", "Recibo de sueldo", "Antiguedad laboral"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -120,6 +158,19 @@
     "codigo_bcra": "007",
     "nombre": "Galicia",
     "tasa_base_tna": 82,
+    "sitioWeb": "https://www.galicia.ar",
+    "tea": 119.8,
+    "cft": 148.6,
+    "perfilesAdmitidos": {
+      "monotributista": {
+        "productos": ["Capital de trabajo independiente", "Cuenta negocios"],
+        "requisitos": ["Constancia ARCA", "Facturacion consistente", "Score bancario"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo personal", "Tarjeta credito Galicia"],
+        "requisitos": ["DNI", "Ingresos registrados", "Antiguedad laboral"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -178,6 +229,28 @@
     "codigo_bcra": "072",
     "nombre": "Santander Argentina",
     "tasa_base_tna": 83.5,
+    "sitioWeb": "https://www.santander.com.ar",
+    "tea": 122.3,
+    "cft": 151.7,
+    "perfilesAdmitidos": {
+      "estudiante": {
+        "productos": ["Cuenta universitaria", "Tarjeta inicial"],
+        "requisitos": ["DNI", "Certificado de alumno regular", "Validacion de identidad"]
+      },
+      "estudianteExtranjero": {
+        "productos": ["Cuenta internacional estudiante", "Tarjeta internacional inicial"],
+        "requisitos": ["Pasaporte", "Certificado de alumno regular", "Constancia de domicilio"],
+        "documentacionExtra": ["Pasaporte vigente", "DNI extranjero o residencia precaria", "Visa de estudiante"]
+      },
+      "monotributista": {
+        "productos": ["Cuenta simple negocio", "Tarjeta pyme simple"],
+        "requisitos": ["Monotributo activo", "Cuenta bancaria", "Actividad declarada"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo personal", "Paquete sueldo"],
+        "requisitos": ["DNI", "Recibo de sueldo", "Cuenta sueldo"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -236,6 +309,24 @@
     "codigo_bcra": "017",
     "nombre": "BBVA Argentina",
     "tasa_base_tna": 84,
+    "sitioWeb": "https://www.bbva.com.ar",
+    "tea": 123.1,
+    "cft": 153.9,
+    "perfilesAdmitidos": {
+      "estudianteExtranjero": {
+        "productos": ["Paquete estudiante global", "Tarjeta inicial internacional"],
+        "requisitos": ["DNI extranjero", "Pasaporte", "Constancia de domicilio"],
+        "documentacionExtra": ["Pasaporte vigente", "Residencia precaria", "Certificado de alumno regular"]
+      },
+      "monotributista": {
+        "productos": ["Prestamo profesional independiente", "Cuenta negocio"],
+        "requisitos": ["Constancia ARCA", "Historial de pagos", "Movimientos declarados"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo sueldo", "Tarjeta credito inicial"],
+        "requisitos": ["DNI", "Recibo de sueldo", "Antiguedad laboral"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -294,6 +385,23 @@
     "codigo_bcra": "285",
     "nombre": "Banco Macro",
     "tasa_base_tna": 86,
+    "sitioWeb": "https://www.macro.com.ar",
+    "tea": 126.5,
+    "cft": 158.2,
+    "perfilesAdmitidos": {
+      "salarioMinimo": {
+        "productos": ["Prestamo personal tramo inicial", "Tarjeta basica"],
+        "requisitos": ["DNI", "Origen general de fondos", "Cuenta bancaria activa"]
+      },
+      "monotributista": {
+        "productos": ["Prestamo capital operativo", "Cuenta comercio"],
+        "requisitos": ["Monotributo vigente", "Movimientos recurrentes", "Sin mora grave"]
+      },
+      "relacionDependencia": {
+        "productos": ["Prestamo consumo con score salarial", "Tarjeta sueldo"],
+        "requisitos": ["Recibo de sueldo", "DNI", "Validacion BCRA"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -352,6 +460,20 @@
     "codigo_bcra": "015",
     "nombre": "ICBC Argentina",
     "tasa_base_tna": 85,
+    "sitioWeb": "https://www.icbc.com.ar",
+    "tea": 124.2,
+    "cft": 155.4,
+    "perfilesAdmitidos": {
+      "estudianteExtranjero": {
+        "productos": ["Tarjeta inicial internacional", "Cuenta estudiante internacional"],
+        "requisitos": ["Pasaporte", "Visa o residencia", "Comprobante general de fondos"],
+        "documentacionExtra": ["Pasaporte vigente", "Visa de estudiante", "Certificado de alumno regular"]
+      },
+      "relacionDependencia": {
+        "productos": ["Tarjeta premium inicial", "Prestamo personal"],
+        "requisitos": ["DNI", "Salario registrado", "Buen comportamiento crediticio"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -410,6 +532,23 @@
     "codigo_bcra": "143",
     "nombre": "Brubank",
     "tasa_base_tna": 88,
+    "sitioWeb": "https://www.brubank.com",
+    "tea": 132.8,
+    "cft": 167.3,
+    "perfilesAdmitidos": {
+      "estudiante": {
+        "productos": ["Cuenta digital", "Tarjeta virtual prepaga"],
+        "requisitos": ["DNI", "Validacion biometrica", "Actividad transaccional"]
+      },
+      "salarioMinimo": {
+        "productos": ["Credito digital preevaluado", "Tarjeta virtual"],
+        "requisitos": ["Identidad validada", "Movimientos recurrentes", "Score transaccional"]
+      },
+      "monotributista": {
+        "productos": ["Credito digital independiente", "Cuenta digital negocio"],
+        "requisitos": ["CUIT", "Actividad declarada", "Movimientos de billetera"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",
@@ -468,6 +607,23 @@
     "codigo_bcra": "384",
     "nombre": "Uala",
     "tasa_base_tna": 89.5,
+    "sitioWeb": "https://www.uala.com.ar",
+    "tea": 136.4,
+    "cft": 171.9,
+    "perfilesAdmitidos": {
+      "estudiante": {
+        "productos": ["Cuenta remunerada", "Tarjeta prepaga"],
+        "requisitos": ["DNI", "Validacion de identidad", "Uso de billetera"]
+      },
+      "salarioMinimo": {
+        "productos": ["Credito digital inicial", "Tarjeta prepaga"],
+        "requisitos": ["DNI", "Movimientos recurrentes", "Sin bloqueo preventivo"]
+      },
+      "monotributista": {
+        "productos": ["Credito comercio digital", "Cobros QR"],
+        "requisitos": ["CUIT", "Actividad declarada", "Cobros digitales"]
+      }
+    },
     "politicas_riesgo": [
       {
         "categoria": "situacion_1",

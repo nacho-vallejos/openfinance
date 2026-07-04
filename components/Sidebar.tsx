@@ -6,7 +6,9 @@ import {
   LayoutDashboard,
   Link2,
   FileCheck2,
+  FileSignature,
   Coins,
+  CreditCard,
   ChevronLeft,
   ChevronRight,
   Scale,
@@ -16,6 +18,7 @@ import {
   Building2,
 } from "lucide-react";
 import { useSidebar } from "./SidebarContext";
+import { useAuth } from "@/components/AuthContext";
 import { cn } from "@/lib/utils";
 
 const routes = [
@@ -44,6 +47,18 @@ const routes = [
     description: "Financiacion en pesos",
   },
   {
+    name: "Emisor Creditos",
+    path: "/emisor-creditos",
+    icon: FileSignature,
+    description: "Contratos y cuadre",
+  },
+  {
+    name: "Elegibilidad",
+    path: "/simulador-elegibilidad",
+    icon: CreditCard,
+    description: "Tarjetas y prestamos",
+  },
+  {
     name: "Asistente Fiscal",
     path: "/asistente-fiscal",
     icon: Scale,
@@ -61,6 +76,8 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { isCollapsed, setIsCollapsed, isMobileOpen, setIsMobileOpen, isHydrated } =
     useSidebar();
+  const { canAccessPath } = useAuth();
+  const visibleRoutes = routes.filter((route) => canAccessPath(route.path));
   const showExpandedContent = !isCollapsed || isMobileOpen;
   const showCollapsedTooltips = isCollapsed && !isMobileOpen;
 
@@ -103,6 +120,7 @@ export default function Sidebar() {
           </div>
 
           <button
+            type="button"
             onClick={() => setIsMobileOpen(false)}
             className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 md:hidden"
             aria-label="Cerrar menu"
@@ -112,7 +130,7 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-6">
-          {routes.map((route) => {
+          {visibleRoutes.map((route) => {
             const isActive =
               pathname === route.path ||
               (route.path === "/home" && (pathname === "/" || pathname === "/dashboard"));
@@ -198,6 +216,7 @@ export default function Sidebar() {
 
           <div className="hidden pt-1 md:block">
             <button
+              type="button"
               onClick={toggleCollapse}
               className="flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white py-2 text-slate-500 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-800"
               aria-label={isCollapsed ? "Expandir menu" : "Colapsar menu"}

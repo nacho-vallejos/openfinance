@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   Area,
   AreaChart,
@@ -20,7 +21,13 @@ import {
   BrainCircuit,
   CheckCircle2,
   CircleDollarSign,
+  Coins,
+  CreditCard,
+  FileCheck2,
+  FileSignature,
   Landmark,
+  Link2,
+  Scale,
   ShieldCheck,
   TrendingUp,
   WalletCards,
@@ -30,6 +37,7 @@ import {
   dashboardSummary,
   incomeMix,
 } from "@/lib/dashboard-data";
+import { useAuth } from "@/components/AuthContext";
 import { cn } from "@/lib/utils";
 
 const formatMoney = (value: number) =>
@@ -78,6 +86,51 @@ const proactiveAlerts = [
   },
 ];
 
+const moduleLinks = [
+  {
+    title: "Conexiones",
+    description: "Vincular bancos, wallets y ARCA",
+    href: "/conexiones",
+    icon: Link2,
+  },
+  {
+    title: "Certificado",
+    description: "Ver capacidad crediticia validada",
+    href: "/certificado",
+    icon: FileCheck2,
+  },
+  {
+    title: "Ofertas de Credito",
+    description: "Simular financiamiento en pesos",
+    href: "/ofertas-credito",
+    icon: Coins,
+  },
+  {
+    title: "Emisor Creditos",
+    description: "Cuadre, rentabilidad y contrato",
+    href: "/emisor-creditos",
+    icon: FileSignature,
+  },
+  {
+    title: "Elegibilidad",
+    description: "Tarjetas y prestamos segun perfil",
+    href: "/simulador-elegibilidad",
+    icon: CreditCard,
+  },
+  {
+    title: "Asistente Fiscal",
+    description: "Control ARCA, caja y cumplimiento",
+    href: "/asistente-fiscal",
+    icon: Scale,
+  },
+  {
+    title: "Catalogo Bancario",
+    description: "Tasas, politicas y scoring",
+    href: "/catalogo-bancos",
+    icon: Landmark,
+  },
+];
+
 function FinancialHealthGauge({ score }: { score: number }) {
   const radius = 78;
   const circumference = 2 * Math.PI * radius;
@@ -117,6 +170,9 @@ function FinancialHealthGauge({ score }: { score: number }) {
 }
 
 export default function DashboardPage() {
+  const { canAccessPath } = useAuth();
+  const visibleModuleLinks = moduleLinks.filter((module) => canAccessPath(module.href));
+
   return (
     <div className="space-y-6 p-0 md:space-y-8 animate-in fade-in duration-500">
       <header className="min-w-0">
@@ -132,6 +188,30 @@ export default function DashboardPage() {
           y actividad crypto para comercios y pymes santafesinas.
         </p>
       </header>
+
+      <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        {visibleModuleLinks.map((module) => {
+          const Icon = module.icon;
+
+          return (
+            <Link
+              key={module.href}
+              href={module.href}
+              className="group rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-emerald-50/40 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-900 dark:hover:bg-emerald-950/30"
+            >
+              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-50 text-emerald-700 transition-colors group-hover:bg-white dark:bg-slate-950 dark:text-emerald-300">
+                <Icon className="h-5 w-5" />
+              </div>
+              <h2 className="text-sm font-black text-slate-950 dark:text-white">
+                {module.title}
+              </h2>
+              <p className="mt-1 text-xs leading-5 text-slate-500">
+                {module.description}
+              </p>
+            </Link>
+          );
+        })}
+      </section>
 
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
         <article className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm sm:p-6 lg:col-span-4">

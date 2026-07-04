@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
+  ArrowLeft,
   ArrowRight,
   BadgeDollarSign,
   CheckCircle2,
   Clock3,
-  Coins,
   FileCheck2,
   HandCoins,
+  Home,
   Info,
   Loader2,
   ShieldCheck,
@@ -17,12 +20,45 @@ import {
   X,
 } from "lucide-react";
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") || "http://localhost:4000";
+const DEMO_USER_ID = "99999999-1111-1111-1111-111111111111";
+
 const formatNumber = (value: number) =>
   Math.round(value)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
-const offers = [
+type CreditOffer = {
+  id: string;
+  title: string;
+  description: string;
+  rate: number;
+  rateLabel: string;
+  maxTerm: number;
+  maxAmount: number;
+  badge: string;
+  source: "mock" | "api";
+  bankCode?: string;
+  riskMultiplier?: number;
+  score?: number;
+};
+
+type CotizacionApiItem = {
+  banco_id: string;
+  codigo_bcra: string;
+  banco: string;
+  tasa_base_tna: number;
+  multiplicador_riesgo: number;
+  tna_personalizada: number;
+  limite_aprobado: number;
+  usuario?: {
+    score_veraz_actual?: number;
+    situacion_bcra_actual?: number;
+  };
+};
+
+const fallbackOffers: CreditOffer[] = [
   {
     id: "capital-local",
     title: "Capital de trabajo comercio local",
@@ -32,6 +68,7 @@ const offers = [
     maxTerm: 18,
     maxAmount: 12800000,
     badge: "Mejor ajuste",
+    source: "mock",
   },
   {
     id: "agro-servicios",
@@ -42,6 +79,7 @@ const offers = [
     maxTerm: 24,
     maxAmount: 25000000,
     badge: "Mayor cupo",
+    source: "mock",
   },
 ];
 
@@ -52,15 +90,21 @@ const steps = [
 ];
 
 export default function OfertasCreditoClient() {
+  const [creditOffers, setCreditOffers] = useState<CreditOffer[]>(fallbackOffers);
   const [amount, setAmount] = useState(8500000);
   const [term, setTerm] = useState(18);
-  const [selectedOfferId, setSelectedOfferId] = useState(offers[0].id);
+  const [selectedOfferId, setSelectedOfferId] = useState(fallbackOffers[0].id);
   const [message, setMessage] = useState("Simulacion lista para enviar.");
   const [approvalState, setApprovalState] = useState<"idle" | "reviewing" | "approved">("idle");
   const [showSummary, setShowSummary] = useState(false);
+  const [isFetchingQuotes, setIsFetchingQuotes] = useState(false);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
+  const [quoteSource, setQuoteSource] = useState<"mock" | "api">("mock");
   const approvalTimerRef = useRef<number | null>(null);
+  const router = useRouter();
 
-  const selectedOffer = offers.find((offer) => offer.id === selectedOfferId) ?? offers[0];
+  const selectedOffer =
+    creditOffers.find((offer) => offer.id === selectedOfferId) ?? creditOffers[0];
   const normalizedAmount = Math.min(amount, selectedOffer.maxAmount);
   const normalizedTerm = Math.min(term, selectedOffer.maxTerm);
 
@@ -75,10 +119,82 @@ export default function OfertasCreditoClient() {
 
   const totalCost = monthlyPayment * normalizedTerm;
   const affordability = Math.min(Math.round((monthlyPayment / 2100000) * 100), 100);
-  const availableAmount = selectedOffer.maxAmount - normalizedAmount;
+  const availableAmount = Math.max(selectedOffer.maxAmount - normalizedAmount, 0);
+
+  const fetchCotizacion = async () => {
+    setIsFetchingQuotes(true);
+    setQuoteError(null);
+    setMessage("Consultando API bancaria local y politicas de riesgo...");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/cotizar`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          usuario_id: DEMO_USER_ID,
+        }),
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          payload?.message || "No se pudo obtener la cotizacion desde la API local."
+        );
+      }
+
+      const apiOffers = ((payload?.data || []) as CotizacionApiItem[]).map((item) => ({
+        id: item.banco_id,
+        title: item.banco,
+        description: `Oferta calculada por Prisma/PostgreSQL con score ${
+          item.usuario?.score_veraz_actual ?? "validado"
+        } y Situacion BCRA ${item.usuario?.situacion_bcra_actual ?? "1"}.`,
+        rate: item.tna_personalizada / 100,
+        rateLabel: `${item.tna_personalizada}% TNA`,
+        maxTerm: item.limite_aprobado >= 10000000 ? 24 : 18,
+        maxAmount: item.limite_aprobado,
+        badge: `BCRA ${item.codigo_bcra}`,
+        source: "api" as const,
+        bankCode: item.codigo_bcra,
+        riskMultiplier: item.multiplicador_riesgo,
+        score: item.usuario?.score_veraz_actual,
+      }));
+
+      if (apiOffers.length === 0) {
+        throw new Error("La API respondio sin ofertas aplicables para este perfil.");
+      }
+
+      setCreditOffers(apiOffers);
+      setSelectedOfferId(apiOffers[0].id);
+      setAmount((current) => Math.min(current, apiOffers[0].maxAmount));
+      setTerm((current) => Math.min(current, apiOffers[0].maxTerm));
+      setQuoteSource("api");
+      setApprovalState("idle");
+      setMessage(`Cotizacion actualizada desde API: ${apiOffers.length} bancos disponibles.`);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "La API local no respondio. Se mantienen ofertas mock.";
+
+      setQuoteError(errorMessage);
+      setQuoteSource("mock");
+      setCreditOffers(fallbackOffers);
+      setSelectedOfferId((current) =>
+        fallbackOffers.some((offer) => offer.id === current)
+          ? current
+          : fallbackOffers[0].id
+      );
+      setMessage("No se pudo conectar con la API local. La simulacion continua en modo mock.");
+    } finally {
+      setIsFetchingQuotes(false);
+    }
+  };
 
   const selectOffer = (offerId: string) => {
-    const offer = offers.find((item) => item.id === offerId);
+    const offer = creditOffers.find((item) => item.id === offerId);
     if (!offer) return;
 
     setSelectedOfferId(offer.id);
@@ -87,6 +203,11 @@ export default function OfertasCreditoClient() {
     setApprovalState("idle");
     setMessage(`Linea seleccionada: ${offer.title}. Ajusta el simulador.`);
   };
+
+  useEffect(() => {
+    fetchCotizacion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!showSummary) return;
@@ -128,6 +249,34 @@ export default function OfertasCreditoClient() {
 
   return (
     <div className="space-y-6 p-4 md:space-y-8 md:p-0 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white/80 p-3 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+            Navegacion
+          </p>
+          <p className="mt-1 text-sm font-black text-slate-900 dark:text-white">
+            Simulador de ofertas de credito
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-2 sm:flex">
+          <button
+            type="button"
+            onClick={() => router.back()}
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-black text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver
+          </button>
+          <Link
+            href="/home"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-3 py-2 text-xs font-black text-white transition-colors hover:bg-emerald-700"
+          >
+            <Home className="h-4 w-4" />
+            Inicio
+          </Link>
+        </div>
+      </div>
+
       <header className="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm">
         <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[1fr_360px] lg:items-center">
           <div className="min-w-0">
@@ -142,6 +291,30 @@ export default function OfertasCreditoClient() {
               Simula lineas en pesos para comercios, profesionales y pymes santafesinas.
               El banco recibe monto, plazo, score y certificado fiscal en un legajo unico.
             </p>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center">
+              <button
+                type="button"
+                onClick={fetchCotizacion}
+                disabled={isFetchingQuotes}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-slate-950 px-4 py-3 text-sm font-black text-white transition-colors hover:bg-slate-800 disabled:cursor-wait disabled:bg-slate-500 sm:w-fit"
+              >
+                {isFetchingQuotes ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Consultando API
+                  </>
+                ) : (
+                  <>
+                    Actualizar con API local <ArrowRight className="h-4 w-4" />
+                  </>
+                )}
+              </button>
+              <span className="text-xs font-semibold text-slate-400">
+                {quoteSource === "api"
+                  ? `Datos reales desde ${API_BASE_URL}/api/cotizar`
+                  : "Modo mock activo si la API local no esta disponible"}
+              </span>
+            </div>
           </div>
 
           <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
@@ -165,7 +338,7 @@ export default function OfertasCreditoClient() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
         <section className="space-y-5 lg:col-span-8">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {offers.map((offer) => {
+            {creditOffers.map((offer) => {
               const isSelected = selectedOffer.id === offer.id;
 
               return (
@@ -207,6 +380,15 @@ export default function OfertasCreditoClient() {
                       <span className="block text-slate-400">Cupo</span>
                       <strong>$ {formatNumber(offer.maxAmount)}</strong>
                     </div>
+                    {offer.source === "api" && (
+                      <div className="col-span-2 rounded-xl bg-white px-3 py-2">
+                        <span className="block text-slate-400">Motor API</span>
+                        <strong>
+                          Multiplicador x{offer.riskMultiplier?.toFixed(2)} · Score{" "}
+                          {offer.score ?? "validado"}
+                        </strong>
+                      </div>
+                    )}
                   </div>
                 </article>
               );
@@ -224,7 +406,7 @@ export default function OfertasCreditoClient() {
                 </p>
               </div>
               <span className="w-fit rounded-full bg-emerald-50 px-3 py-1 text-xs font-black text-emerald-700">
-                {selectedOffer.rateLabel}
+                {isFetchingQuotes ? "Actualizando..." : selectedOffer.rateLabel}
               </span>
             </div>
 
@@ -242,6 +424,12 @@ export default function OfertasCreditoClient() {
                 Respuesta estimada: 24hs
               </div>
             </div>
+
+            {quoteError && (
+              <div className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-semibold leading-5 text-amber-800">
+                API local no disponible: {quoteError}
+              </div>
+            )}
 
             <div className="mt-6 space-y-7">
               <div className="space-y-3">
@@ -335,13 +523,13 @@ export default function OfertasCreditoClient() {
               <button
                 type="button"
                 onClick={requestApproval}
-                disabled={approvalState === "reviewing"}
+                disabled={approvalState === "reviewing" || isFetchingQuotes}
                 className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 px-4 py-4 text-center text-sm font-black text-white shadow-md shadow-emerald-600/10 transition-colors hover:bg-emerald-700 disabled:cursor-wait disabled:bg-emerald-500"
               >
-                {approvalState === "reviewing" ? (
+                {approvalState === "reviewing" || isFetchingQuotes ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    Evaluando solicitud
+                    {isFetchingQuotes ? "Esperando cotizacion API" : "Evaluando solicitud"}
                   </>
                 ) : (
                   <>
@@ -379,6 +567,31 @@ export default function OfertasCreditoClient() {
                   <strong className="text-right text-slate-950">{value}</strong>
                 </div>
               ))}
+            </div>
+          </section>
+
+          <section className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+            <h2 className="flex items-center gap-2 text-base font-black text-slate-950">
+              <BadgeDollarSign className="h-5 w-5 text-emerald-600" />
+              Estado de integracion
+            </h2>
+            <div className="mt-4 space-y-3 text-sm">
+              <div className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-3">
+                <span className="font-semibold text-slate-500">Endpoint</span>
+                <strong className="text-right text-xs text-slate-900">
+                  {API_BASE_URL}/api/cotizar
+                </strong>
+              </div>
+              <div className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-3">
+                <span className="font-semibold text-slate-500">Fuente</span>
+                <strong className="text-right text-slate-900">
+                  {quoteSource === "api" ? "API + PostgreSQL" : "Mock local"}
+                </strong>
+              </div>
+              <div className="flex items-center justify-between gap-3 rounded-xl bg-slate-50 px-3 py-3">
+                <span className="font-semibold text-slate-500">Ofertas</span>
+                <strong className="text-right text-slate-900">{creditOffers.length}</strong>
+              </div>
             </div>
           </section>
 

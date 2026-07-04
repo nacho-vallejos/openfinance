@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   ArrowLeft,
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 import { useSidebar } from "@/components/SidebarContext";
 import { useTheme } from "@/components/ThemeContext";
+import { useAuth } from "@/components/AuthContext";
 import { cn } from "@/lib/utils";
 
 const routeLabels: Record<string, string> = {
@@ -29,6 +31,8 @@ const routeLabels: Record<string, string> = {
   certificado: "Certificado",
   "certificado-fiscal": "Certificado",
   "ofertas-credito": "Ofertas de Credito",
+  "emisor-creditos": "Emisor de Creditos",
+  "simulador-elegibilidad": "Simulador de Elegibilidad",
   "asistente-fiscal": "Asistente Fiscal",
   "catalogo-bancos": "Catalogo Bancario",
   configuracion: "Configuracion",
@@ -39,6 +43,10 @@ const searchItems = [
   { label: "Conectar Mercado Pago", href: "/conexiones" },
   { label: "Ver Score de Salud Financiera", href: "/home" },
   { label: "Simular credito productivo", href: "/ofertas-credito" },
+  { label: "Emitir contrato de credito", href: "/emisor-creditos" },
+  { label: "Calcular cuadre financiero", href: "/emisor-creditos" },
+  { label: "Consultar elegibilidad crediticia", href: "/simulador-elegibilidad" },
+  { label: "Ver bancos para estudiantes", href: "/simulador-elegibilidad" },
   { label: "Revisar asistente fiscal", href: "/asistente-fiscal" },
   { label: "Consultar catalogo bancario", href: "/catalogo-bancos" },
   { label: "Descargar certificado fiscal", href: "/certificado" },
@@ -72,6 +80,7 @@ export default function GlobalHeader() {
   const router = useRouter();
   const { isCollapsed, isHydrated, setIsMobileOpen } = useSidebar();
   const { isDark, toggleTheme } = useTheme();
+  const { user, logout, canAccessPath } = useAuth();
   const [query, setQuery] = useState("");
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -94,7 +103,8 @@ export default function GlobalHeader() {
     });
   }, [pathname]);
 
-  const filteredResults = searchItems.filter((item) =>
+  const visibleSearchItems = searchItems.filter((item) => canAccessPath(item.href));
+  const filteredResults = visibleSearchItems.filter((item) =>
     item.label.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -129,6 +139,7 @@ export default function GlobalHeader() {
     >
       <div className="flex min-h-14 items-center gap-1 px-2 sm:gap-2 sm:px-4 md:h-16 md:gap-3 md:px-6">
         <button
+          type="button"
           onClick={() => setIsMobileOpen(true)}
           className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white md:hidden"
           aria-label="Abrir menu"
@@ -137,6 +148,7 @@ export default function GlobalHeader() {
         </button>
 
         <button
+          type="button"
           onClick={goBack}
           className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white md:h-10 md:w-10"
           aria-label="Volver atras"
@@ -144,39 +156,39 @@ export default function GlobalHeader() {
           <ArrowLeft className="h-5 w-5" />
         </button>
 
-        <button
-          onClick={() => router.push("/home")}
+        <Link
+          href="/home"
           className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white md:h-10 md:w-10"
           aria-label="Volver al inicio"
         >
           <Home className="h-5 w-5" />
-        </button>
+        </Link>
 
         <nav className="hidden min-w-0 flex-1 items-center gap-1 text-sm font-semibold text-slate-500 md:flex">
-          <button
-            onClick={() => router.push("/home")}
+          <Link
+            href="/home"
             className="rounded-lg px-2 py-1 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
           >
             OpenFinance+
-          </button>
+          </Link>
           {crumbs.map((crumb, index) => {
             const isLast = index === crumbs.length - 1;
 
             return (
               <span key={crumb.href} className="flex min-w-0 items-center gap-1">
                 <ChevronRight className="h-4 w-4 shrink-0 text-slate-300" />
-                <button
-                  onClick={() => !isLast && router.push(crumb.href)}
-                  disabled={isLast}
-                  className={cn(
-                    "truncate rounded-lg px-2 py-1 capitalize transition-colors",
-                    isLast
-                      ? "cursor-default text-slate-950"
-                      : "hover:bg-slate-100 hover:text-slate-900"
-                  )}
-                >
-                  {crumb.label}
-                </button>
+                {isLast ? (
+                  <span className="truncate rounded-lg px-2 py-1 capitalize text-slate-950 dark:text-white">
+                    {crumb.label}
+                  </span>
+                ) : (
+                  <Link
+                    href={crumb.href}
+                    className="truncate rounded-lg px-2 py-1 capitalize transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white"
+                  >
+                    {crumb.label}
+                  </Link>
+                )}
               </span>
             );
           })}
@@ -206,6 +218,7 @@ export default function GlobalHeader() {
           {isSearchOpen && (query || isSearchFocused) && (
             <>
               <button
+                type="button"
                 className="fixed inset-0 z-10 cursor-default"
                 aria-label="Cerrar busqueda"
                 onClick={() => setIsSearchOpen(false)}
@@ -215,21 +228,26 @@ export default function GlobalHeader() {
                   Resultados simulados
                 </div>
                 {(filteredResults.length ? filteredResults : [{ label: "Sin resultados", href: "" }]).map((item) => (
-                  <button
+                  <Link
                     key={item.label}
-                    onClick={() => {
-                      if (item.href) {
-                        router.push(item.href);
+                    href={item.href || "#"}
+                    onClick={(event) => {
+                      if (!item.href) {
+                        event.preventDefault();
+                        return;
                       }
                       setQuery(item.label);
                       setIsSearchOpen(false);
                     }}
-                    disabled={!item.href}
-                    className="flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                    aria-disabled={!item.href}
+                    className={cn(
+                      "flex w-full items-center gap-2 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800",
+                      !item.href && "pointer-events-none text-slate-400"
+                    )}
                   >
                     <Search className="h-4 w-4 text-emerald-600" />
                     {item.label}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </>
@@ -237,6 +255,7 @@ export default function GlobalHeader() {
         </div>
 
         <button
+          type="button"
           onClick={() => {
             setIsSearchOpen(true);
             inputRef.current?.focus();
@@ -248,6 +267,7 @@ export default function GlobalHeader() {
         </button>
 
         <button
+          type="button"
           onClick={toggleTheme}
           className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white md:h-10 md:w-10"
           aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo noche"}
@@ -257,6 +277,7 @@ export default function GlobalHeader() {
 
         <div className="relative">
           <button
+            type="button"
             onClick={() => setIsNotificationsOpen((current) => !current)}
             className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-white md:h-10 md:w-10"
             aria-expanded={isNotificationsOpen}
@@ -269,6 +290,7 @@ export default function GlobalHeader() {
           {isNotificationsOpen && (
             <>
               <button
+                type="button"
                 className="fixed inset-0 z-10 cursor-default"
                 aria-label="Cerrar notificaciones"
                 onClick={() => setIsNotificationsOpen(false)}
@@ -292,17 +314,17 @@ export default function GlobalHeader() {
                     const Icon = notification.icon;
 
                     return (
-                      <button
+                      <Link
                         key={notification.title}
+                        href={
+                          notification.title.includes("Oferta")
+                            ? "/ofertas-credito"
+                            : notification.title.includes("ARCA")
+                              ? "/certificado"
+                              : "/home"
+                        }
                         onClick={() => {
                           setIsNotificationsOpen(false);
-                          router.push(
-                            notification.title.includes("Oferta")
-                              ? "/ofertas-credito"
-                              : notification.title.includes("ARCA")
-                                ? "/certificado"
-                                : "/home"
-                          );
                         }}
                         className="flex w-full gap-3 rounded-xl px-3 py-3 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
                       >
@@ -320,7 +342,7 @@ export default function GlobalHeader() {
                             {notification.time}
                           </span>
                         </span>
-                      </button>
+                      </Link>
                     );
                   })}
                 </div>
@@ -331,6 +353,7 @@ export default function GlobalHeader() {
 
         <div className="relative">
           <button
+            type="button"
             onClick={() => setIsProfileOpen((current) => !current)}
             className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-50 p-0 text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800 md:h-10 md:w-auto md:gap-2 md:rounded-full md:p-1 md:pr-3"
             aria-expanded={isProfileOpen}
@@ -339,12 +362,13 @@ export default function GlobalHeader() {
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white">
               <User className="h-4 w-4" />
             </span>
-            <span className="hidden lg:inline">Martina</span>
+            <span className="hidden lg:inline">{user?.name ?? "Usuario"}</span>
           </button>
 
           {isProfileOpen && (
             <>
               <button
+                type="button"
                 className="fixed inset-0 z-10 cursor-default"
                 aria-label="Cerrar perfil"
                 onClick={() => setIsProfileOpen(false)}
@@ -352,34 +376,31 @@ export default function GlobalHeader() {
               <div className="absolute right-0 top-12 z-20 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-800 dark:bg-slate-900">
                 <div className="border-b border-slate-100 p-4 dark:border-slate-800">
                   <p className="text-sm font-black text-slate-950 dark:text-white">
-                    Martina Alvarez
+                    {user?.name ?? "Usuario"}
                   </p>
                   <p className="mt-1 text-xs text-slate-500">
-                    Comercio santafesino - Perfil verificado
+                    {user?.roleLabel ?? "Perfil"} - Sesion verificada
                   </p>
                 </div>
                 <div className="p-2">
-                  <button
-                    onClick={() => {
-                      setIsProfileOpen(false);
-                      router.push("/certificado");
-                    }}
+                  <Link
+                    href="/certificado"
+                    onClick={() => setIsProfileOpen(false)}
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     <FileCheck2 className="h-4 w-4 text-emerald-600" />
                     Ver certificado crediticio
-                  </button>
-                  <button
-                    onClick={() => {
-                      setIsProfileOpen(false);
-                      router.push("/configuracion");
-                    }}
+                  </Link>
+                  <Link
+                    href="/configuracion"
+                    onClick={() => setIsProfileOpen(false)}
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     <Settings className="h-4 w-4 text-slate-500" />
                     Ajustes de cuenta
-                  </button>
+                  </Link>
                   <button
+                    type="button"
                     onClick={toggleTheme}
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
@@ -391,14 +412,16 @@ export default function GlobalHeader() {
                     {isDark ? "Usar modo claro" : "Usar modo noche"}
                   </button>
                   <button
+                    type="button"
                     onClick={() => {
+                      logout();
                       setIsProfileOpen(false);
-                      router.push("/onboarding");
+                      router.replace("/login");
                     }}
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     <LogOut className="h-4 w-4 text-slate-500" />
-                    Reiniciar demo
+                    Cerrar sesion
                   </button>
                 </div>
               </div>
