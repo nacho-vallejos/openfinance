@@ -21,7 +21,6 @@ import {
   BrainCircuit,
   CheckCircle2,
   CircleDollarSign,
-  Coins,
   CreditCard,
   FileCheck2,
   FileSignature,
@@ -94,16 +93,16 @@ const moduleLinks = [
     icon: Link2,
   },
   {
-    title: "Certificado",
-    description: "Ver capacidad crediticia validada",
-    href: "/certificado",
-    icon: FileCheck2,
+    title: "Catalogo Bancario",
+    description: "Tasas, politicas y scoring",
+    href: "/catalogo-bancos",
+    icon: Landmark,
   },
   {
-    title: "Ofertas de Credito",
-    description: "Simular financiamiento en pesos",
-    href: "/ofertas-credito",
-    icon: Coins,
+    title: "Perfil y certificado",
+    description: "Editar datos y ver certificado",
+    href: "/configuracion",
+    icon: FileCheck2,
   },
   {
     title: "Emisor Creditos",
@@ -119,15 +118,9 @@ const moduleLinks = [
   },
   {
     title: "Asistente Fiscal",
-    description: "Control ARCA, caja y cumplimiento",
+    description: "Fiscal, caja y ofertas de credito",
     href: "/asistente-fiscal",
     icon: Scale,
-  },
-  {
-    title: "Catalogo Bancario",
-    description: "Tasas, politicas y scoring",
-    href: "/catalogo-bancos",
-    icon: Landmark,
   },
 ];
 

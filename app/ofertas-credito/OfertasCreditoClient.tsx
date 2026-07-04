@@ -89,7 +89,11 @@ const steps = [
   "Enviamos legajo al banco",
 ];
 
-export default function OfertasCreditoClient() {
+type OfertasCreditoClientProps = {
+  embedded?: boolean;
+};
+
+export default function OfertasCreditoClient({ embedded = false }: OfertasCreditoClientProps) {
   const [creditOffers, setCreditOffers] = useState<CreditOffer[]>(fallbackOffers);
   const [amount, setAmount] = useState(8500000);
   const [term, setTerm] = useState(18);
@@ -110,6 +114,10 @@ export default function OfertasCreditoClient() {
 
   const monthlyPayment = useMemo(() => {
     const monthlyRate = selectedOffer.rate / 12;
+
+    if (normalizedTerm <= 0) return normalizedAmount;
+    if (monthlyRate <= 0) return Math.round(normalizedAmount / normalizedTerm);
+
     const payment =
       (normalizedAmount * monthlyRate * Math.pow(1 + monthlyRate, normalizedTerm)) /
       (Math.pow(1 + monthlyRate, normalizedTerm) - 1);
@@ -248,7 +256,8 @@ export default function OfertasCreditoClient() {
   };
 
   return (
-    <div className="space-y-6 p-4 md:space-y-8 md:p-0 animate-in fade-in duration-500">
+    <div className="space-y-6 md:space-y-8 animate-in fade-in duration-500">
+      {!embedded && (
       <div className="flex flex-col gap-2 rounded-2xl border border-slate-200 bg-white/80 p-3 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/80 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
@@ -276,6 +285,7 @@ export default function OfertasCreditoClient() {
           </Link>
         </div>
       </div>
+      )}
 
       <header className="overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm">
         <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[1fr_360px] lg:items-center">
@@ -384,7 +394,11 @@ export default function OfertasCreditoClient() {
                       <div className="col-span-2 rounded-xl bg-white px-3 py-2">
                         <span className="block text-slate-400">Motor API</span>
                         <strong>
-                          Multiplicador x{offer.riskMultiplier?.toFixed(2)} · Score{" "}
+                          Multiplicador{" "}
+                          {typeof offer.riskMultiplier === "number"
+                            ? `x${offer.riskMultiplier.toFixed(2)}`
+                            : "validado"}{" "}
+                          - Score{" "}
                           {offer.score ?? "validado"}
                         </strong>
                       </div>

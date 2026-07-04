@@ -15,6 +15,7 @@ import {
   TrendingUp,
   WalletCards,
 } from "lucide-react";
+import OfertasCreditoClient from "../ofertas-credito/OfertasCreditoClient";
 
 const fiscalData = {
   category: "Monotributo Categoria H",
@@ -78,6 +79,23 @@ export default function AsistenteFiscalClient() {
           flujo de caja.
         </p>
       </header>
+
+      <section className="grid grid-cols-1 gap-3 rounded-[1.75rem] border border-slate-200 bg-white p-3 shadow-sm sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          ["Uso fiscal", `${fiscalUsage}%`, "Categoria H monitoreada"],
+          ["Liquidez inmediata", formatMoney(liquidity), "Bancos + wallets"],
+          ["Deduccion estimada", formatMoney(fiscalData.estimatedDeduction), "Impacto potencial"],
+          ["Credito sugerido", "$ 12.800.000", "Capital de trabajo"],
+        ].map(([label, value, detail]) => (
+          <div key={label} className="rounded-2xl bg-slate-50 px-4 py-3">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              {label}
+            </p>
+            <p className="mt-1 text-xl font-black text-slate-950">{value}</p>
+            <p className="mt-1 text-xs font-semibold text-slate-500">{detail}</p>
+          </div>
+        ))}
+      </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
         <article className="rounded-[1.75rem] border border-slate-200 bg-white p-4 shadow-sm sm:p-6 md:col-span-7">
@@ -259,6 +277,19 @@ export default function AsistenteFiscalClient() {
             })}
           </div>
         </article>
+      </section>
+
+      <section className="space-y-4">
+        <div className="rounded-[1.75rem] border border-emerald-100 bg-emerald-50 px-4 py-3">
+          <h2 className="text-base font-black text-slate-950">
+            Ofertas de credito conectadas al analisis fiscal
+          </h2>
+          <p className="mt-1 text-sm leading-6 text-slate-600">
+            Las cuotas, cupos y pre-aprobaciones se leen junto con facturacion,
+            liquidez, deducciones y cumplimiento para decidir con todos los datos visibles.
+          </p>
+        </div>
+        <OfertasCreditoClient embedded />
       </section>
     </div>
   );

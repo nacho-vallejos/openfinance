@@ -16,14 +16,14 @@ const moduleLabels: Record<string, string> = {
   home: "Inicio",
   dashboard: "Inicio",
   conexiones: "Conexiones",
-  certificado: "Certificado",
-  "certificado-fiscal": "Certificado",
-  "ofertas-credito": "Ofertas de Credito",
+  certificado: "Perfil y certificado",
+  "certificado-fiscal": "Perfil y certificado",
+  "ofertas-credito": "Asistente Fiscal",
   "emisor-creditos": "Emisor de Creditos",
   "simulador-elegibilidad": "Simulador de Elegibilidad",
   "asistente-fiscal": "Asistente Fiscal",
   "catalogo-bancos": "Catalogo Bancario",
-  configuracion: "Configuracion",
+  configuracion: "Perfil y certificado",
   onboarding: "Onboarding",
 };
 

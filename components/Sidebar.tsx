@@ -5,9 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Link2,
-  FileCheck2,
   FileSignature,
-  Coins,
   CreditCard,
   ChevronLeft,
   ChevronRight,
@@ -29,22 +27,16 @@ const routes = [
     description: "Vision consolidada en pesos",
   },
   {
+    name: "Catalogo Bancario",
+    path: "/catalogo-bancos",
+    icon: Building2,
+    description: "Politicas y tasas base",
+  },
+  {
     name: "Conexiones",
     path: "/conexiones",
     icon: Link2,
     description: "Bancos, wallets y ARCA",
-  },
-  {
-    name: "Certificado",
-    path: "/certificado",
-    icon: FileCheck2,
-    description: "Capacidad crediticia validada",
-  },
-  {
-    name: "Ofertas de Credito",
-    path: "/ofertas-credito",
-    icon: Coins,
-    description: "Financiacion en pesos",
   },
   {
     name: "Emisor Creditos",
@@ -62,13 +54,7 @@ const routes = [
     name: "Asistente Fiscal",
     path: "/asistente-fiscal",
     icon: Scale,
-    description: "ARCA, caja y cumplimiento",
-  },
-  {
-    name: "Catalogo Bancario",
-    path: "/catalogo-bancos",
-    icon: Building2,
-    description: "Politicas y tasas base",
+    description: "Fiscal, caja y credito",
   },
 ];
 
@@ -191,10 +177,10 @@ export default function Sidebar() {
           >
             <Settings className="h-4.5 w-4.5 shrink-0 text-slate-400 group-hover:text-slate-600" />
             {showExpandedContent ? (
-              <span className="font-semibold">Ajustes generales</span>
+              <span className="font-semibold">Perfil y certificado</span>
             ) : showCollapsedTooltips ? (
               <div className="absolute left-full z-50 ml-3 hidden whitespace-nowrap rounded-lg bg-slate-900 px-2.5 py-1.5 text-xs text-white shadow-md group-hover:block">
-                Ajustes generales
+                Perfil y certificado
               </div>
             ) : null}
           </Link>

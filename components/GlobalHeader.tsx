@@ -28,28 +28,28 @@ const routeLabels: Record<string, string> = {
   home: "Inicio",
   dashboard: "Inicio",
   conexiones: "Conexiones",
-  certificado: "Certificado",
-  "certificado-fiscal": "Certificado",
-  "ofertas-credito": "Ofertas de Credito",
+  certificado: "Perfil y certificado",
+  "certificado-fiscal": "Perfil y certificado",
+  "ofertas-credito": "Asistente Fiscal",
   "emisor-creditos": "Emisor de Creditos",
   "simulador-elegibilidad": "Simulador de Elegibilidad",
   "asistente-fiscal": "Asistente Fiscal",
   "catalogo-bancos": "Catalogo Bancario",
-  configuracion: "Configuracion",
+  configuracion: "Perfil y certificado",
   onboarding: "Onboarding",
 };
 
 const searchItems = [
   { label: "Conectar Mercado Pago", href: "/conexiones" },
   { label: "Ver Score de Salud Financiera", href: "/home" },
-  { label: "Simular credito productivo", href: "/ofertas-credito" },
+  { label: "Simular credito productivo", href: "/asistente-fiscal" },
   { label: "Emitir contrato de credito", href: "/emisor-creditos" },
   { label: "Calcular cuadre financiero", href: "/emisor-creditos" },
   { label: "Consultar elegibilidad crediticia", href: "/simulador-elegibilidad" },
   { label: "Ver bancos para estudiantes", href: "/simulador-elegibilidad" },
   { label: "Revisar asistente fiscal", href: "/asistente-fiscal" },
   { label: "Consultar catalogo bancario", href: "/catalogo-bancos" },
-  { label: "Descargar certificado fiscal", href: "/certificado" },
+  { label: "Descargar certificado fiscal", href: "/configuracion" },
   { label: "Consultar datos compartidos", href: "/conexiones" },
   { label: "Ayuda sobre Decreto 353/2025", href: "/conexiones" },
 ];
@@ -318,9 +318,9 @@ export default function GlobalHeader() {
                         key={notification.title}
                         href={
                           notification.title.includes("Oferta")
-                            ? "/ofertas-credito"
+                            ? "/asistente-fiscal"
                             : notification.title.includes("ARCA")
-                              ? "/certificado"
+                              ? "/configuracion"
                               : "/home"
                         }
                         onClick={() => {
@@ -384,12 +384,12 @@ export default function GlobalHeader() {
                 </div>
                 <div className="p-2">
                   <Link
-                    href="/certificado"
+                    href="/configuracion"
                     onClick={() => setIsProfileOpen(false)}
                     className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     <FileCheck2 className="h-4 w-4 text-emerald-600" />
-                    Ver certificado crediticio
+                    Ver perfil y certificado
                   </Link>
                   <Link
                     href="/configuracion"

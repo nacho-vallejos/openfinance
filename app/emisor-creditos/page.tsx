@@ -552,6 +552,24 @@ export default function EmisorCreditosPage() {
                 </p>
               </section>
 
+              <section className="mt-6 mb-4 text-xs leading-5 text-gray-500 text-justify">
+                <p>
+                  CLÁUSULA DE EXENCIÓN DE RESPONSABILIDAD: OpenFinance+ actúa
+                  exclusivamente como una plataforma tecnológica de simulación,
+                  asesoramiento y articulación de información. OpenFinance+ no es una
+                  entidad financiera regida por la Ley de Entidades Financieras N° 21.526
+                  del Banco Central de la República Argentina (BCRA), ni actúa como
+                  otorgante directo de créditos, tarjetas de crédito, ni fondos de ninguna
+                  índole. Los cálculos, cuadros de amortización y condiciones detalladas
+                  en el presente documento son de carácter estrictamente simulado,
+                  informativo y no vinculante para la plataforma. La aprobación,
+                  otorgamiento, tasas definitivas y liquidación final de cualquier producto
+                  financiero quedan sujetos exclusivamente a la evaluación crediticia,
+                  políticas de riesgo y términos y condiciones de la entidad financiera u
+                  otorgante final.
+                </p>
+              </section>
+
               <section className="grid grid-cols-1 gap-10 pt-8 text-center text-sm sm:grid-cols-2">
                 <div>
                   <div className="border-t border-black pt-2">
